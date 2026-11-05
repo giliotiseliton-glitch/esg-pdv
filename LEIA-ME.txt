@@ -1,0 +1,7 @@
+ESG PDV - primeira versão
+1. Esta versão contém tela de login, sessão persistente e painel inicial.
+2. Hospede os arquivos em um serviço HTTPS (por exemplo, GitHub Pages).
+3. Abra o endereço publicado no Chrome e use "Adicionar à tela inicial".
+4. Entre com o e-mail e a senha criados no Supabase.
+5. Não compartilhe sua senha nem chaves secret/service_role.
+Observação: esta versão ainda não contém os formulários de passageiros, viagens, reservas e financeiro. Eles serão adicionados em etapas.

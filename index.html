@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b67">
+<link rel="manifest" href="manifest.json">
+<title>ESG PDV</title>
+<style>
+:root{--navy:#123b67;--blue:#1769aa;--silver:#dce4ec;--bg:#f3f6fa;--ink:#172536;--muted:#687789}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,#0d2d50,#1769aa);color:white;padding:22px 18px}
+header h1{margin:0;font-size:25px;letter-spacing:.4px}header p{margin:6px 0 0;color:#dce9f5;font-size:13px}
+main{max-width:980px;margin:24px auto;padding:0 14px}.panel{background:white;border:1px solid #e1e7ee;border-radius:14px;padding:20px;box-shadow:0 5px 18px #18334d0c}
+h2{margin:0 0 14px;font-size:20px}.muted{color:var(--muted);font-size:14px;line-height:1.5}
+label{display:block;font-weight:600;font-size:13px;margin:13px 0 6px}input{width:100%;padding:13px;border:1px solid #cbd5df;border-radius:9px;font-size:16px}
+button{border:0;border-radius:9px;background:var(--blue);color:white;font-weight:700;padding:13px 17px;font-size:15px;cursor:pointer}
+button.secondary{background:#e8eef5;color:var(--navy)}button:disabled{opacity:.55}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.status{margin-top:14px;padding:11px;border-radius:8px;background:#eef3f8;font-size:13px;white-space:pre-wrap}
+.hidden{display:none}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:16px}
+.tile{padding:17px;border:1px solid #dfe6ee;border-radius:12px;background:#fbfcfe}.tile strong{display:block;font-size:16px;color:var(--navy);margin-bottom:5px}.tile span{font-size:12px;color:var(--muted)}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+footer{text-align:center;color:#8793a1;font-size:12px;padding:25px}
+@media(min-width:650px){.login{max-width:440px;margin:45px auto}}
+</style>
+</head>
+<body>
+<header><h1>ESG PDV</h1><p>Gestão de excursões • Controle interno</p></header>
+<main>
+<section id="login" class="panel login">
+<h2>Acesso ao sistema</h2>
+<p class="muted">Entre com o e-mail e a senha cadastrados no Supabase.</p>
+<form id="loginForm">
+<label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required>
+<label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" required>
+<div class="actions"><button id="loginBtn" type="submit">Entrar</button></div>
+</form><div id="loginStatus" class="status" role="status">Aguardando acesso.</div>
+</section>
+<section id="dashboard" class="panel hidden">
+<div class="topline"><div><h2>Painel ESG Excursões</h2><div class="muted" id="who"></div></div><button class="secondary" id="logoutBtn">Sair</button></div>
+<p class="muted">A conexão com seu banco de dados foi estabelecida. Esta é a primeira etapa: acesso e painel inicial. Os módulos de cadastro e controle serão construídos nas próximas etapas.</p>
+<div class="grid">
+<div class="tile"><strong>Passageiros</strong><span>Cadastro e consulta</span></div>
+<div class="tile"><strong>Viagens</strong><span>Datas, destinos e valores</span></div>
+<div class="tile"><strong>Ônibus</strong><span>Veículos e poltronas</span></div>
+<div class="tile"><strong>Reservas</strong><span>Passageiros e assentos</span></div>
+<div class="tile"><strong>Pagamentos</strong><span>Entradas e saldos</span></div>
+<div class="tile"><strong>Despesas</strong><span>Custos por viagem</span></div>
+<div class="tile"><strong>Relatórios</strong><span>Caixa e resultado</span></div>
+</div>
+<div id="dashStatus" class="status" role="status">Conectado.</div>
+</section>
+</main>
+<footer>ESG Excursões • Acesso privado</footer>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// URL base do projeto Supabase (não incluir /rest/v1/)
+const SUPABASE_URL = 'https://vljqzmegdsvnnanrqgfh.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_VYGkP7QI1zUaGVLLxbGYxQ_sHs2eDaM';
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const loginSection=document.querySelector('#login');
+const dash=document.querySelector('#dashboard');
+const loginStatus=document.querySelector('#loginStatus');
+const dashStatus=document.querySelector('#dashStatus');
+function showSession(session){
+  const logged=!!session;
+  loginSection.classList.toggle('hidden',logged);
+  dash.classList.toggle('hidden',!logged);
+  if(logged){
+    document.querySelector('#who').textContent=session.user.email || 'Usuário autenticado';
+    dashStatus.textContent='Login confirmado. Banco conectado ao projeto ESG - PDV.';
+  }
+}
+document.querySelector('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.querySelector('#loginBtn');btn.disabled=true;loginStatus.textContent='Verificando acesso...';
+  const {data,error}=await supabase.auth.signInWithPassword({
+    email:document.querySelector('#email').value.trim(),
+    password:document.querySelector('#password').value
+  });
+  btn.disabled=false;
+  if(error){loginStatus.textContent='Não foi possível entrar: '+error.message;return;}
+  showSession(data.session);
+});
+document.querySelector('#logoutBtn').addEventListener('click',async()=>{
+  const {error}=await supabase.auth.signOut();
+  if(error){dashStatus.textContent='Erro ao sair: '+error.message;return;}
+  showSession(null);
+});
+const {data:{session}}=await supabase.auth.getSession();
+showSession(session);
+supabase.auth.onAuthStateChange((_event,newSession)=>showSession(newSession));
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+</script>
+</body></html>
