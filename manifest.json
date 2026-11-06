@@ -1,9 +1,1 @@
-{
-  "name": "ESG PDV - ESG Excursões",
-  "short_name": "ESG PDV",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#f3f6fa",
-  "theme_color": "#123b67",
-  "description": "Sistema privado de gestão de excursões da ESG Excursões"
-}
+{"name":"ESG PDV","short_name":"ESG PDV","start_url":"./","display":"standalone","background_color":"#f3f6fa","theme_color":"#123b67"}

@@ -1,99 +1,23 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123b67">
-<link rel="manifest" href="manifest.json">
-<title>ESG PDV</title>
-<style>
-:root{--navy:#123b67;--blue:#1769aa;--silver:#dce4ec;--bg:#f3f6fa;--ink:#172536;--muted:#687789}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:linear-gradient(120deg,#0d2d50,#1769aa);color:white;padding:22px 18px}
-header h1{margin:0;font-size:25px;letter-spacing:.4px}header p{margin:6px 0 0;color:#dce9f5;font-size:13px}
-main{max-width:980px;margin:24px auto;padding:0 14px}.panel{background:white;border:1px solid #e1e7ee;border-radius:14px;padding:20px;box-shadow:0 5px 18px #18334d0c}
-h2{margin:0 0 14px;font-size:20px}.muted{color:var(--muted);font-size:14px;line-height:1.5}
-label{display:block;font-weight:600;font-size:13px;margin:13px 0 6px}input{width:100%;padding:13px;border:1px solid #cbd5df;border-radius:9px;font-size:16px}
-button{border:0;border-radius:9px;background:var(--blue);color:white;font-weight:700;padding:13px 17px;font-size:15px;cursor:pointer}
-button.secondary{background:#e8eef5;color:var(--navy)}button:disabled{opacity:.55}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.status{margin-top:14px;padding:11px;border-radius:8px;background:#eef3f8;font-size:13px;white-space:pre-wrap}
-.hidden{display:none}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:16px}
-.tile{padding:17px;border:1px solid #dfe6ee;border-radius:12px;background:#fbfcfe}.tile strong{display:block;font-size:16px;color:var(--navy);margin-bottom:5px}.tile span{font-size:12px;color:var(--muted)}
-.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-footer{text-align:center;color:#8793a1;font-size:12px;padding:25px}
-@media(min-width:650px){.login{max-width:440px;margin:45px auto}}
-</style>
-</head>
-<body>
-<header><h1>ESG PDV</h1><p>Gestão de excursões • Controle interno</p></header>
-<main>
-<section id="login" class="panel login">
-<h2>Acesso ao sistema</h2>
-<p class="muted">Entre com o e-mail e a senha cadastrados no Supabase.</p>
-<form id="loginForm">
-<label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required>
-<label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" required>
-<div class="actions"><button id="loginBtn" type="submit">Entrar</button></div>
-</form><div id="loginStatus" class="status" role="status">Aguardando acesso.</div>
-</section>
-<section id="dashboard" class="panel hidden">
-<div class="topline"><div><h2>Painel ESG Excursões</h2><div class="muted" id="who"></div></div><button class="secondary" id="logoutBtn">Sair</button></div>
-<p class="muted">A conexão com seu banco de dados foi estabelecida. Esta é a primeira etapa: acesso e painel inicial. Os módulos de cadastro e controle serão construídos nas próximas etapas.</p>
-<div class="grid">
-<div class="tile"><strong>Passageiros</strong><span>Cadastro e consulta</span></div>
-<div class="tile"><strong>Viagens</strong><span>Datas, destinos e valores</span></div>
-<div class="tile"><strong>Ônibus</strong><span>Veículos e poltronas</span></div>
-<div class="tile"><strong>Reservas</strong><span>Passageiros e assentos</span></div>
-<div class="tile"><strong>Pagamentos</strong><span>Entradas e saldos</span></div>
-<div class="tile"><strong>Despesas</strong><span>Custos por viagem</span></div>
-<div class="tile"><strong>Relatórios</strong><span>Caixa e resultado</span></div>
-</div>
-<div id="dashStatus" class="status" role="status">Conectado.</div>
-</section>
-</main>
-<footer>ESG Excursões • Acesso privado</footer>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123b67"><link rel="manifest" href="manifest.json"><title>ESG PDV</title><style>
+body{margin:0;background:#f3f6fa;color:#172536;font-family:Arial}header{background:#123b67;color:white;padding:20px}main{max-width:850px;margin:20px auto;padding:12px}.card{background:white;padding:18px;border-radius:12px;margin-bottom:14px}h1,h2{margin-top:0}input{box-sizing:border-box;width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccd5df;border-radius:8px;font-size:16px}button{background:#1769aa;color:white;border:0;padding:12px 15px;border-radius:8px;font-weight:bold;margin:4px}button.alt{background:#e7edf4;color:#123b67}button.del{background:#a83232}.hidden{display:none}.person{border:1px solid #ddd;padding:12px;border-radius:8px;margin:8px 0}.muted{color:#657487;font-size:13px}.status{padding:10px;background:#eef3f8;border-radius:8px;margin-top:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}
+</style></head><body><header><h1>ESG PDV</h1>ESG Excursões • Gestão interna</header><main>
+<section id="login" class="card"><h2>Acesso ao sistema</h2><form id="loginForm"><label>E-mail</label><input id="email" type="email" required><label>Senha</label><input id="password" type="password" required><button>Entrar</button></form><div id="loginStatus" class="status">Informe seu acesso.</div></section>
+<section id="app" class="hidden"><div class="card"><button id="logout" class="alt">Sair</button><h2>Painel ESG Excursões</h2><p id="who" class="muted"></p><button id="showPeople">Cadastro de passageiros</button><p class="muted">Os outros módulos serão adicionados nas próximas etapas.</p></div>
+<section id="people" class="card hidden"><button id="back" class="alt">Voltar</button><h2>Cadastro de passageiros</h2><form id="personForm"><input id="pid" type="hidden"><label>Nome completo *</label><input id="name" required><div class="row"><div><label>CPF</label><input id="cpf"></div><div><label>Telefone / WhatsApp</label><input id="phone"></div></div><div class="row"><div><label>E-mail</label><input id="mail" type="email"></div><div><label>Nascimento</label><input id="birth" type="date"></div></div><label>Observações</label><input id="notes"><button id="save">Salvar passageiro</button><button id="cancel" type="button" class="alt hidden">Cancelar edição</button></form><div id="personStatus" class="status">Cadastre seu primeiro passageiro.</div><h3>Lista de passageiros</h3><input id="search" placeholder="Pesquisar nome, CPF ou telefone"><div id="list"></div></section></section></main>
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-// URL base do projeto Supabase (não incluir /rest/v1/)
-const SUPABASE_URL = 'https://vljqzmegdsvnnanrqgfh.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_VYGkP7QI1zUaGVLLxbGYxQ_sHs2eDaM';
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-const loginSection=document.querySelector('#login');
-const dash=document.querySelector('#dashboard');
-const loginStatus=document.querySelector('#loginStatus');
-const dashStatus=document.querySelector('#dashStatus');
-function showSession(session){
-  const logged=!!session;
-  loginSection.classList.toggle('hidden',logged);
-  dash.classList.toggle('hidden',!logged);
-  if(logged){
-    document.querySelector('#who').textContent=session.user.email || 'Usuário autenticado';
-    dashStatus.textContent='Login confirmado. Banco conectado ao projeto ESG - PDV.';
-  }
-}
-document.querySelector('#loginForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const btn=document.querySelector('#loginBtn');btn.disabled=true;loginStatus.textContent='Verificando acesso...';
-  const {data,error}=await supabase.auth.signInWithPassword({
-    email:document.querySelector('#email').value.trim(),
-    password:document.querySelector('#password').value
-  });
-  btn.disabled=false;
-  if(error){loginStatus.textContent='Não foi possível entrar: '+error.message;return;}
-  showSession(data.session);
-});
-document.querySelector('#logoutBtn').addEventListener('click',async()=>{
-  const {error}=await supabase.auth.signOut();
-  if(error){dashStatus.textContent='Erro ao sair: '+error.message;return;}
-  showSession(null);
-});
-const {data:{session}}=await supabase.auth.getSession();
-showSession(session);
-supabase.auth.onAuthStateChange((_event,newSession)=>showSession(newSession));
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
-}
-</script>
-</body></html>
+import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const db=createClient('https://vljqzmegdsvnnanrqgfh.supabase.co','sb_publishable_VYGkP7QI1zUaGVLLxbGYxQ_sHs2eDaM');
+const $=x=>document.getElementById(x);let user=null,rows=[];
+function session(s){user=s?.user||null;$('login').classList.toggle('hidden',!!user);$('app').classList.toggle('hidden',!user);if(user)$('who').textContent=user.email||''}
+$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginStatus').textContent='Verificando...';let{data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginStatus').textContent=error.message;return}session(data.session)};
+$('logout').onclick=async()=>{await db.auth.signOut();session(null)};
+$('showPeople').onclick=()=>{$('people').classList.remove('hidden');load()};
+$('back').onclick=()=>{$('people').classList.add('hidden');reset()};
+$('cancel').onclick=reset;$('search').oninput=render;
+function reset(){$('personForm').reset();$('pid').value='';$('cancel').classList.add('hidden');$('save').textContent='Salvar passageiro'}
+async function load(){ $('personStatus').textContent='Carregando...';let{data,error}=await db.from('passengers').select('id,full_name,cpf,phone,email,birth_date,notes').order('full_name');if(error){$('personStatus').textContent=error.message;return}rows=data||[];render();$('personStatus').textContent=rows.length+' passageiro(s) cadastrado(s).'}
+function render(){let q=$('search').value.toLowerCase();let box=$('list');box.replaceChildren();let found=rows.filter(x=>[x.full_name,x.cpf,x.phone,x.email].some(v=>(v||'').toLowerCase().includes(q)));if(!found.length){box.textContent='Nenhum passageiro encontrado.';return}for(let x of found){let d=document.createElement('div');d.className='person';let b=document.createElement('b');b.textContent=x.full_name;d.append(b);let small=document.createElement('p');small.className='muted';small.textContent=[x.cpf,x.phone,x.email,x.birth_date].filter(Boolean).join(' • ');d.append(small);let edit=document.createElement('button');edit.className='alt';edit.textContent='Editar';edit.onclick=()=>{ $('pid').value=x.id;$('name').value=x.full_name||'';$('cpf').value=x.cpf||'';$('phone').value=x.phone||'';$('mail').value=x.email||'';$('birth').value=x.birth_date||'';$('notes').value=x.notes||'';$('save').textContent='Salvar alterações';$('cancel').classList.remove('hidden');window.scrollTo(0,0)};let del=document.createElement('button');del.className='del';del.textContent='Excluir';del.onclick=async()=>{if(confirm('Excluir '+x.full_name+'?')){let{error}=await db.from('passengers').delete().eq('id',x.id);$('personStatus').textContent=error?error.message:'Passageiro excluído.';if(!error)load()}};d.append(edit,del);box.append(d)}}
+$('personForm').onsubmit=async e=>{e.preventDefault();let payload={user_id:user.id,full_name:$('name').value.trim(),cpf:$('cpf').value.trim()||null,phone:$('phone').value.trim()||null,email:$('mail').value.trim()||null,birth_date:$('birth').value||null,notes:$('notes').value.trim()||null};let id=$('pid').value;let result=id?await db.from('passengers').update(payload).eq('id',id):await db.from('passengers').insert(payload);if(result.error){$('personStatus').textContent='Erro: '+result.error.message;return}reset();$('personStatus').textContent='Salvo com sucesso.';load()};
+let{data:{session:s}}=await db.auth.getSession();session(s);db.auth.onAuthStateChange((_e,s)=>session(s));
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
