@@ -1,1 +1,1 @@
-ESG PDV v2: cadastro de passageiros. Substitua os quatro arquivos correspondentes no GitHub. Nunca compartilhe senha ou chave secreta.
+ESG PDV v3: inclui cadastro de várias viagens e mantém cadastro/consulta de passageiros. Substitua os arquivos no repositório GitHub. A tabela trips deve conter as colunas usadas pelo formulário. Se aparecer erro de coluna, envie a mensagem para ajustar ao seu banco.

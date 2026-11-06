@@ -1,23 +1,78 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123b67"><link rel="manifest" href="manifest.json"><title>ESG PDV</title><style>
-body{margin:0;background:#f3f6fa;color:#172536;font-family:Arial}header{background:#123b67;color:white;padding:20px}main{max-width:850px;margin:20px auto;padding:12px}.card{background:white;padding:18px;border-radius:12px;margin-bottom:14px}h1,h2{margin-top:0}input{box-sizing:border-box;width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccd5df;border-radius:8px;font-size:16px}button{background:#1769aa;color:white;border:0;padding:12px 15px;border-radius:8px;font-weight:bold;margin:4px}button.alt{background:#e7edf4;color:#123b67}button.del{background:#a83232}.hidden{display:none}.person{border:1px solid #ddd;padding:12px;border-radius:8px;margin:8px 0}.muted{color:#657487;font-size:13px}.status{padding:10px;background:#eef3f8;border-radius:8px;margin-top:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}
-</style></head><body><header><h1>ESG PDV</h1>ESG Excursões • Gestão interna</header><main>
-<section id="login" class="card"><h2>Acesso ao sistema</h2><form id="loginForm"><label>E-mail</label><input id="email" type="email" required><label>Senha</label><input id="password" type="password" required><button>Entrar</button></form><div id="loginStatus" class="status">Informe seu acesso.</div></section>
-<section id="app" class="hidden"><div class="card"><button id="logout" class="alt">Sair</button><h2>Painel ESG Excursões</h2><p id="who" class="muted"></p><button id="showPeople">Cadastro de passageiros</button><p class="muted">Os outros módulos serão adicionados nas próximas etapas.</p></div>
-<section id="people" class="card hidden"><button id="back" class="alt">Voltar</button><h2>Cadastro de passageiros</h2><form id="personForm"><input id="pid" type="hidden"><label>Nome completo *</label><input id="name" required><div class="row"><div><label>CPF</label><input id="cpf"></div><div><label>Telefone / WhatsApp</label><input id="phone"></div></div><div class="row"><div><label>E-mail</label><input id="mail" type="email"></div><div><label>Nascimento</label><input id="birth" type="date"></div></div><label>Observações</label><input id="notes"><button id="save">Salvar passageiro</button><button id="cancel" type="button" class="alt hidden">Cancelar edição</button></form><div id="personStatus" class="status">Cadastre seu primeiro passageiro.</div><h3>Lista de passageiros</h3><input id="search" placeholder="Pesquisar nome, CPF ou telefone"><div id="list"></div></section></section></main>
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b67"><link rel="manifest" href="manifest.json">
+<title>ESG PDV</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#172536;font-family:Arial,sans-serif}
+header{background:linear-gradient(120deg,#0d2d50,#1769aa);color:#fff;padding:20px 16px}
+header h1{margin:0}header p{margin:6px 0 0;color:#dce9f5;font-size:13px}
+main{max-width:900px;margin:20px auto;padding:0 12px}.card{background:#fff;border:1px solid #e1e7ee;border-radius:13px;padding:17px;margin-bottom:14px}
+h2{margin:0 0 12px;font-size:20px}.muted{color:#687789;font-size:13px;line-height:1.5}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5df;border-radius:8px;font-size:16px;background:#fff}
+textarea{min-height:70px}button{border:0;border-radius:8px;background:#1769aa;color:white;padding:12px 15px;font-weight:bold;font-size:14px;margin:4px 3px 4px 0}
+button.alt{background:#e8eef5;color:#123b67}button.del{background:#a83232}
+.hidden{display:none!important}.row{display:flex;gap:10px;flex-wrap:wrap}.row>div{flex:1;min-width:135px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.status{background:#eef3f8;border-radius:8px;padding:10px;margin:10px 0;font-size:13px;white-space:pre-wrap}
+.item{border:1px solid #dfe6ee;border-radius:10px;padding:12px;margin:9px 0}.item strong{display:block;color:#123b67}.item small{display:block;color:#687789;margin:5px 0;line-height:1.5}
+.login{max-width:440px;margin:35px auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px}
+.tile{text-align:left;background:#f9fbfd;border:1px solid #dfe6ee;color:#123b67;padding:15px}.tile span{display:block;color:#687789;font-size:12px;font-weight:normal;margin-top:5px}
+</style></head><body>
+<header><h1>ESG PDV</h1><p>ESG Excursões • Gestão interna</p></header><main>
+<section id="login" class="card login"><h2>Acesso ao sistema</h2><p class="muted">Entre com seu e-mail e senha cadastrados.</p>
+<form id="loginForm"><label>E-mail</label><input id="email" type="email" required autocomplete="username"><label>Senha</label><input id="password" type="password" required autocomplete="current-password"><button>Entrar</button></form><div id="loginStatus" class="status">Informe seu acesso.</div></section>
+<section id="app" class="hidden">
+<div class="card"><div class="top"><div><h2>Painel ESG Excursões</h2><span class="muted" id="who"></span></div><button id="logout" class="alt">Sair</button></div>
+<div class="grid"><button id="goTrips" class="tile"><b>Viagens / Excursões</b><span>Cadastrar várias viagens futuras</span></button><button id="goPassengers" class="tile"><b>Passageiros</b><span>Cadastro e consulta</span></button></div></div>
+<section id="trips" class="card hidden"><div class="top"><h2>Viagens / Excursões</h2><button id="tripsBack" class="alt">Voltar</button></div>
+<p class="muted">Cadastre quantas viagens quiser. Cada excursão terá sua própria data, destino, preço e status.</p>
+<form id="tripForm"><input id="tripId" type="hidden">
+<label>Destino / Parque *</label><input id="destination" required placeholder="Ex.: Hopi Hari">
+<div class="row"><div><label>Data de saída *</label><input id="departure" type="date" required></div><div><label>Data de retorno</label><input id="returnDate" type="date"></div></div>
+<div class="row"><div><label>Valor por pessoa (R$)</label><input id="price" type="number" min="0" step="0.01" value="0"></div><div><label>Entrada / reserva (R$)</label><input id="fee" type="number" min="0" step="0.01" value="80"></div><div><label>Prazo do saldo (dias antes)</label><input id="dueDays" type="number" min="0" value="7"></div></div>
+<label>Status</label><select id="tripStatus"><option value="planning">Em planejamento</option><option value="open">Vendas abertas</option><option value="completed">Realizada</option><option value="canceled">Cancelada</option></select>
+<label>Cidades / pontos de embarque</label><input id="cities" placeholder="Ex.: Bauru, Pederneiras e Jaú">
+<label>Roteiro e horários</label><textarea id="itinerary" placeholder="Horários e observações do roteiro"></textarea>
+<label>Observações internas</label><textarea id="notes"></textarea>
+<button id="saveTrip">Salvar viagem</button><button type="button" id="cancelEdit" class="alt hidden">Cancelar edição</button></form>
+<div id="tripMessage" class="status">Nenhuma ação realizada.</div>
+<div class="top"><h2>Viagens cadastradas</h2><button id="refreshTrips" class="alt">Atualizar</button></div>
+<input id="tripSearch" placeholder="Pesquisar por destino">
+<div id="tripList"></div></section>
+<section id="passengers" class="card hidden"><div class="top"><h2>Cadastro de passageiros</h2><button id="passBack" class="alt">Voltar</button></div>
+<form id="personForm"><input id="personId" type="hidden"><label>Nome completo *</label><input id="fullName" required>
+<div class="row"><div><label>CPF</label><input id="cpf"></div><div><label>Telefone / WhatsApp</label><input id="phone"></div></div>
+<div class="row"><div><label>E-mail</label><input id="personEmail" type="email"></div><div><label>Data de nascimento</label><input id="birthDate" type="date"></div></div>
+<label>Observações</label><input id="personNotes"><button>Salvar passageiro</button></form>
+<div id="personMessage" class="status"></div><input id="personSearch" placeholder="Pesquisar passageiro"><div id="personList"></div></section>
+</section></main>
 <script type="module">
 import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const db=createClient('https://vljqzmegdsvnnanrqgfh.supabase.co','sb_publishable_VYGkP7QI1zUaGVLLxbGYxQ_sHs2eDaM');
-const $=x=>document.getElementById(x);let user=null,rows=[];
-function session(s){user=s?.user||null;$('login').classList.toggle('hidden',!!user);$('app').classList.toggle('hidden',!user);if(user)$('who').textContent=user.email||''}
-$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginStatus').textContent='Verificando...';let{data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginStatus').textContent=error.message;return}session(data.session)};
-$('logout').onclick=async()=>{await db.auth.signOut();session(null)};
-$('showPeople').onclick=()=>{$('people').classList.remove('hidden');load()};
-$('back').onclick=()=>{$('people').classList.add('hidden');reset()};
-$('cancel').onclick=reset;$('search').oninput=render;
-function reset(){$('personForm').reset();$('pid').value='';$('cancel').classList.add('hidden');$('save').textContent='Salvar passageiro'}
-async function load(){ $('personStatus').textContent='Carregando...';let{data,error}=await db.from('passengers').select('id,full_name,cpf,phone,email,birth_date,notes').order('full_name');if(error){$('personStatus').textContent=error.message;return}rows=data||[];render();$('personStatus').textContent=rows.length+' passageiro(s) cadastrado(s).'}
-function render(){let q=$('search').value.toLowerCase();let box=$('list');box.replaceChildren();let found=rows.filter(x=>[x.full_name,x.cpf,x.phone,x.email].some(v=>(v||'').toLowerCase().includes(q)));if(!found.length){box.textContent='Nenhum passageiro encontrado.';return}for(let x of found){let d=document.createElement('div');d.className='person';let b=document.createElement('b');b.textContent=x.full_name;d.append(b);let small=document.createElement('p');small.className='muted';small.textContent=[x.cpf,x.phone,x.email,x.birth_date].filter(Boolean).join(' • ');d.append(small);let edit=document.createElement('button');edit.className='alt';edit.textContent='Editar';edit.onclick=()=>{ $('pid').value=x.id;$('name').value=x.full_name||'';$('cpf').value=x.cpf||'';$('phone').value=x.phone||'';$('mail').value=x.email||'';$('birth').value=x.birth_date||'';$('notes').value=x.notes||'';$('save').textContent='Salvar alterações';$('cancel').classList.remove('hidden');window.scrollTo(0,0)};let del=document.createElement('button');del.className='del';del.textContent='Excluir';del.onclick=async()=>{if(confirm('Excluir '+x.full_name+'?')){let{error}=await db.from('passengers').delete().eq('id',x.id);$('personStatus').textContent=error?error.message:'Passageiro excluído.';if(!error)load()}};d.append(edit,del);box.append(d)}}
-$('personForm').onsubmit=async e=>{e.preventDefault();let payload={user_id:user.id,full_name:$('name').value.trim(),cpf:$('cpf').value.trim()||null,phone:$('phone').value.trim()||null,email:$('mail').value.trim()||null,birth_date:$('birth').value||null,notes:$('notes').value.trim()||null};let id=$('pid').value;let result=id?await db.from('passengers').update(payload).eq('id',id):await db.from('passengers').insert(payload);if(result.error){$('personStatus').textContent='Erro: '+result.error.message;return}reset();$('personStatus').textContent='Salvo com sucesso.';load()};
-let{data:{session:s}}=await db.auth.getSession();session(s);db.auth.onAuthStateChange((_e,s)=>session(s));
+const $=id=>document.getElementById(id);let user=null,tripRows=[],personRows=[];
+function setSession(s){user=s?.user||null;$('login').classList.toggle('hidden',!!user);$('app').classList.toggle('hidden',!user);if(user)$('who').textContent=user.email||'Usuário autenticado'}
+$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginStatus').textContent='Verificando acesso...';let{data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginStatus').textContent='Falha no acesso: '+error.message;return}setSession(data.session)};
+$('logout').onclick=async()=>{await db.auth.signOut();setSession(null)};
+function show(section){['trips','passengers'].forEach(id=>$(id).classList.toggle('hidden',id!==section))}
+$('goTrips').onclick=()=>{show('trips');loadTrips()};$('goPassengers').onclick=()=>{show('passengers');loadPeople()};
+$('tripsBack').onclick=()=>show('');$('passBack').onclick=()=>show('');
+const brDate=s=>s?s.split('-').reverse().join('/'):'—';
+const brMoney=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+function resetTrip(){$('tripForm').reset();$('tripId').value='';$('price').value='0';$('fee').value='80';$('dueDays').value='7';$('tripStatus').value='planning';$('cancelEdit').classList.add('hidden');$('saveTrip').textContent='Salvar viagem'}
+$('cancelEdit').onclick=resetTrip;$('refreshTrips').onclick=loadTrips;$('tripSearch').oninput=renderTrips;
+async function loadTrips(){ $('tripMessage').textContent='Carregando viagens...';let{data,error}=await db.from('trips').select('*').order('departure_date',{ascending:true});if(error){$('tripMessage').textContent='Erro ao consultar viagens: '+error.message;return}tripRows=data||[];renderTrips();$('tripMessage').textContent=tripRows.length+' viagem(ns) cadastrada(s). Você pode adicionar quantas viagens futuras precisar.'}
+function renderTrips(){let q=$('tripSearch').value.toLowerCase().trim(),box=$('tripList');box.replaceChildren();let arr=tripRows.filter(t=>(t.destination||'').toLowerCase().includes(q));if(!arr.length){box.textContent='Nenhuma viagem encontrada.';return}for(let t of arr){let d=document.createElement('div');d.className='item';let title=document.createElement('strong');title.textContent=(t.destination||'Destino')+' • '+brDate(t.departure_date);d.append(title);let info=document.createElement('small');info.textContent='Retorno: '+brDate(t.return_date)+' | Valor: '+brMoney(t.sale_price)+' | Reserva: '+brMoney(t.booking_fee)+' | Status: '+({planning:'Em planejamento',open:'Vendas abertas',completed:'Realizada',canceled:'Cancelada'}[t.status]||t.status);d.append(info);if(t.departure_city){let c=document.createElement('small');c.textContent='Embarques: '+t.departure_city;d.append(c)}let ed=document.createElement('button');ed.className='alt';ed.textContent='Editar';ed.onclick=()=>editTrip(t);let del=document.createElement('button');del.className='del';del.textContent='Excluir';del.onclick=async()=>{if(confirm('Excluir a viagem '+t.destination+'?')){let{error}=await db.from('trips').delete().eq('id',t.id);$('tripMessage').textContent=error?'Erro ao excluir: '+error.message:'Viagem excluída.';if(!error)loadTrips()}};d.append(ed,del);box.append(d)}}
+function editTrip(t){$('tripId').value=t.id;$('destination').value=t.destination||'';$('departure').value=t.departure_date||'';$('returnDate').value=t.return_date||'';$('price').value=t.sale_price??0;$('fee').value=t.booking_fee??0;$('dueDays').value=t.balance_due_days??7;$('tripStatus').value=t.status||'planning';$('cities').value=t.departure_city||'';$('itinerary').value=t.itinerary||'';$('notes').value=t.notes||'';$('saveTrip').textContent='Salvar alterações';$('cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+$('tripForm').onsubmit=async e=>{e.preventDefault();if($('returnDate').value&&$('returnDate').value<$('departure').value){$('tripMessage').textContent='A data de retorno não pode ser anterior à saída.';return}
+let payload={user_id:user.id,destination:$('destination').value.trim(),departure_date:$('departure').value,return_date:$('returnDate').value||null,sale_price:Number($('price').value||0),booking_fee:Number($('fee').value||0),balance_due_days:Number($('dueDays').value||0),status:$('tripStatus').value,departure_city:$('cities').value.trim()||null,itinerary:$('itinerary').value.trim()||null,notes:$('notes').value.trim()||null};
+let id=$('tripId').value;$('saveTrip').disabled=true;let result=id?await db.from('trips').update(payload).eq('id',id):await db.from('trips').insert(payload);$('saveTrip').disabled=false;if(result.error){$('tripMessage').textContent='Não foi possível salvar. Detalhe: '+result.error.message;return}resetTrip();$('tripMessage').textContent='Viagem salva com sucesso.';loadTrips()};
+function resetPerson(){$('personForm').reset();$('personId').value=''}
+async function loadPeople(){let{data,error}=await db.from('passengers').select('*').order('full_name');if(error){$('personMessage').textContent=error.message;return}personRows=data||[];renderPeople();$('personMessage').textContent=personRows.length+' passageiro(s) cadastrado(s).'}
+function renderPeople(){let q=$('personSearch').value.toLowerCase(),box=$('personList');box.replaceChildren();let arr=personRows.filter(p=>[p.full_name,p.cpf,p.phone].some(v=>(v||'').toLowerCase().includes(q)));for(let p of arr){let d=document.createElement('div');d.className='item';let b=document.createElement('strong');b.textContent=p.full_name;d.append(b);let sm=document.createElement('small');sm.textContent=[p.cpf,p.phone,p.email].filter(Boolean).join(' • ');d.append(sm);box.append(d)}if(!arr.length)box.textContent='Nenhum passageiro encontrado.'}
+$('personSearch').oninput=renderPeople;
+$('personForm').onsubmit=async e=>{e.preventDefault();let payload={user_id:user.id,full_name:$('fullName').value.trim(),cpf:$('cpf').value.trim()||null,phone:$('phone').value.trim()||null,email:$('personEmail').value.trim()||null,birth_date:$('birthDate').value||null,notes:$('personNotes').value.trim()||null};let{error}=await db.from('passengers').insert(payload);if(error){$('personMessage').textContent='Erro: '+error.message;return}resetPerson();$('personMessage').textContent='Passageiro salvo.';loadPeople()};
+let{data:{session}}=await db.auth.getSession();setSession(session);db.auth.onAuthStateChange((_e,s)=>setSession(s));
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script></body></html>
