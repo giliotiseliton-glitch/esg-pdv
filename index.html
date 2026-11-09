@@ -11,6 +11,7 @@
 </section></main>
 <script type="module">
 import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+document.getElementById('loginStatus').textContent='JavaScript carregado!';
 const db=createClient('https://vljqzmegdsvnnanrqgfh.supabase.co','sb_publishable_VYGkP7QI1zUaGVLLxbGYxQ_sHs2eDaM');
 const $=id=>document.getElementById(id);let user=null,tripRows=[],people=[],buses=[];
 function session(s){user=s?.user||null;$('login').classList.toggle('hidden',!!user);$('app').classList.toggle('hidden',!user);if(user)$('who').textContent=user.email||''}
